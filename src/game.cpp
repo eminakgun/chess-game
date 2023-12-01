@@ -9,7 +9,7 @@ Game::~Game()
 }
 
 void Game::start() {
-    cout << "Welcome to the Chess Game!";
+    cout << "Welcome to the Chess Game!" << endl;
     _board.print();
 
     while(!is_finished()) {
@@ -29,15 +29,25 @@ void Game::start() {
 }
 
 void Game::get_input() {
-    cout << "[" << _turn << "'s Turn]" << endl;
+    cout << "[" << _turn;
+    cout << "'s Turn]" << endl;
     cout << "Enter your move:" << endl;
     cin >> _move;
 }
 bool Game::validate_input() const {
+    if ("exit" == _move)
+    {
+        std::exit(0);
+    }
+    
     return _board.can_play(_move);
 }
 string& Game::get_suggestion() const {
     string suggestion;
 
     return suggestion;
+}
+
+bool Game::is_finished() const {
+    return false;
 }

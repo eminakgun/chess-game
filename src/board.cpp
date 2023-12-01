@@ -14,11 +14,20 @@ void Board::print() const {
 }
 
 
-int Board::score() const{
+int Board::score() const {
     int score{0};
 
     cout << "Black's score: " << _black.score(); 
     cout << "White's score: " << _white.score();
 
     return _black.score() + _white.score();
+}
+
+void Board::play(string move) {
+
+}
+
+bool Board::can_play(string move) const {
+    return true;
+
 }

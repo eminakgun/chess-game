@@ -1,9 +1,25 @@
+CC     = g++
+INCDIR = include
+CFLAGS = -std=c++11
 
+SRCDIR = src
 
-build:
+BINDIR = bin
+SRCS = $(wildcard $(SRCDIR)/*.cpp)
+OBJS = $(patsubst $(SRCDIR)/%.cpp, $(BINDIR)/%.o, $(SRCS))
 
-test:
+print:
+	@echo $(SRCS)
+	@echo $(OBJS)
 
-run:
+chess: clean $(OBJS)
+	$(CC) $(CFLAGS) $(OBJS) -o chess
 
-all: build test run
+all: chess
+	./chess
+
+$(BINDIR)/%.o: $(SRCDIR)/%.cpp
+	$(CC) $(CFLAGS) -I$(INCDIR) -c $< -o $@
+
+clean:
+	rm -rf chess $(BINDIR)/*.o

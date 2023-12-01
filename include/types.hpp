@@ -5,18 +5,7 @@
 
 enum class Turn : bool {Black = false, White = true};
 
-std::ostream& operator<<(std::ostream& lhs, const Turn turn) {
-    switch (turn)
-    {
-    case Turn::Black:
-        lhs << "Black";
-    case Turn::White:
-        lhs << "White";
-    default:
-        break;
-    }
-    return lhs;
-}
+std::ostream& operator<<(std::ostream& lhs, const Turn turn);
 
 // Board Row characters
 enum Rows {a, b, c, d, e, f, g, h};

@@ -6,6 +6,7 @@
 #include <types.hpp>
 #include <board.hpp>
 #include <pieces.hpp>
+#include <types.hpp>
 
 class Game
 {
