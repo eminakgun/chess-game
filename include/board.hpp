@@ -22,8 +22,10 @@ namespace chess_core {
         int score(Color color) const;
 
         void init();
-        void play(string move);
-        bool can_play(string move) const;
+        void play(const string& move);
+        bool can_play(const string& move, const Color& current_turn) const;
+        bool is_valid_key(const char& key) const;
+        bool is_valid_move(const string& move, const Color& current_turn) const;
     };
     
 }

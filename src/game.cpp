@@ -45,15 +45,37 @@ void Game::get_input() {
     cout << "Enter your move:" << endl;
     cin >> _move;
 }
+
 bool Game::validate_input() const {
+    const Color current_color = _turn == Turn::Black ? Color::Black : Color::White;
     if ("exit" == _move)
     {
         _board.save_to("board.txt");
         std::exit(0);
+    } 
+    else if ("load" == _move)
+    {
+        std::string filename;
+        std::cout << "Enter filename to load: ";
+        std::cin >> filename;
+        _board.load_from(filename);
+        return true;
     }
-    
-    return _board.can_play(_move);
+    else if ("save" == _move)
+    {
+        std::string filename;
+        std::cout << "Enter filename to save: ";
+        std::cin >> filename;
+        _board.save_to(filename);
+        return true;
+    }
+    else if (!_board.can_play(_move, current_color))
+    {
+        std::cout << "Invalid input!" << endl; 
+        return false;
+    }
 }
+
 string& Game::get_suggestion() const {
     string suggestion;
 

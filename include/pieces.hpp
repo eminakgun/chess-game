@@ -17,6 +17,9 @@ namespace chess_core {
         explicit Piece(PieceTypes type=PieceTypes::Pawn, Color color=Color::White);
         //~Piece();
 
+        PieceTypes get_type() const;
+        Color get_color() const;
+
         int score() const;
         string to_symbol() const;
         static Piece from_symbol(char symbol);

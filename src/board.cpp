@@ -116,13 +116,74 @@ int Board::score(Color color) const {
     return score;
 }
 
-void Board::play(string move) {
+void Board::play(const string& move) {
 
 }
 
-bool Board::can_play(string move) const {
+bool Board::can_play(const string& move, const Color& current_turn) const {
+
+    if (move.size() != 4)
+        return false;
+
+    // validate each character
+    for (char c : move)
+        if (!is_valid_key(c))
+            return false;
+
+    // validate requested move        
+    if (!is_valid_move(move, current_turn))
+        return false;
+    
     return true;
 
+}
+
+bool Board::is_valid_key(const char& key) const {
+    static const std::vector<char> valid_chars = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'};
+    static const std::vector<char> valid_nums = {'1', '2', '3', '4', '5', '6', '7', '8'};
+    std::vector<char> to_search;
+
+    if (std::isalpha(key))
+        to_search = valid_chars;
+    else
+        to_search = valid_nums;
+
+    for (char c : to_search)
+        if (c == key)
+            return true;
+    return false;
+}
+
+bool Board::is_valid_move(const string& move, const Color& current_turn) const {
+    const int start_index = move[0] - 'a';
+    const int start_num   = move[1] - '1';
+    const int end_index   = move[2] - 'a';
+    const int end_num     = move[3] - '1';
+
+    const Piece& source = _board[start_index][start_num];
+    const Piece& dest   = _board[end_index][end_num];
+
+    // Can't move if current player does not exist in source
+    if (source.get_type() == PieceTypes::NoPiece ||
+            source.get_color() != current_turn)
+        return false;
+
+    // Can't move if current player's piece exists in destination
+    else if (dest.get_type() != PieceTypes::NoPiece &&
+                dest.get_color() == current_turn)
+        return false;
+
+    // TODO
+    // Check if King is under attack
+        // Check if King is the source piece
+        // else Error
+
+    // Check if source piece can move to destination
+        // Check if any piece exists through travel path
+        // else Error
+    // else Error
+        
+    return true;
 }
 
 } // namespace chess_core
