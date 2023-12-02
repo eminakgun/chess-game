@@ -12,10 +12,44 @@ Piece::~Piece()
 }
 */
 
-int Piece::score() const{
+ostream& operator<<(ostream& os, const Piece& piece) {
+    os << "Piece type: "  << piece.to_symbol();
+    os << ", Piece color: " << piece._color;
+
+    return os;
+}
+
+int Piece::score() const {
     int score{0};
 
+    switch (_type)
+    {
+    case PieceTypes::Queen:
+        score = 9;
+        break;
+    case PieceTypes::Rook:
+        score = 5;
+        break;
+    case PieceTypes::Knight:
+    case PieceTypes::Bishop:
+        score = 3;
+        break;
+    case PieceTypes::Pawn:
+        score = 1;
+        break;
+    
+    default:
+        break;
+    }
+
     return score;
+}
+
+PieceTypes Piece::get_type() const {
+    return _type;
+}
+Color Piece::get_color() const {
+    return _color;
 }
 
 string Piece::to_symbol() const {
@@ -53,7 +87,6 @@ string Piece::to_symbol() const {
         sym = tolower(sym[0]);
     }
     
-
     return sym;
 }
 
@@ -86,6 +119,16 @@ Piece Piece::from_symbol(char symbol) {
         default:
             return Piece(PieceTypes::NoPiece);
     }
+}
+
+bool Piece::can_move(const Position& src, const Position& dest) const {
+    // TODO determien if piece can move to dest
+    if (_type == PieceTypes::Pawn)
+    {
+        ;/* code */
+    }
+    
+    return true;
 }
 
 } // namespace chess_core

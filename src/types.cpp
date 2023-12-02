@@ -16,4 +16,18 @@ std::ostream& operator<<(std::ostream& lhs, const Turn turn) {
     return lhs;
 }
 
+std::ostream& operator<<(std::ostream& lhs, const Color color) {
+    switch (color){
+        case Color::Black:
+            lhs << "Black";
+            break;
+        case Color::White:
+            lhs << "White";
+            break;
+        default:
+            break;
+    }
+    return lhs;
+}
+
 } // namespace chess_core

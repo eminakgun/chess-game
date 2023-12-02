@@ -2,9 +2,16 @@
 #include <pieces.hpp>
 #include <game.hpp>
 
+using namespace chess_core;
+
 int main(int argc, char *argv[]) {
-    chess_core::Board board;
+    Board board;
     string board_path;
+
+    board.init();
+    board.print();
+    cout << board.is_valid_move("a2a3", Color::White) << endl;
+    exit(1);
 
     if (argc == 2) {
         string board_name = argv[1];

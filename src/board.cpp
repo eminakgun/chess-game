@@ -61,7 +61,11 @@ void Board::init() {
 
 }
 
-// print board
+
+const Piece& Board::at(const Position& pos) const {
+    return _board.at(pos.y).at(static_cast<int>(pos.x));
+}
+
 void Board::print() const {
 
     for (int i = 7; i >= 0; --i) {
@@ -86,15 +90,16 @@ bool Board::save_to(const std::string& filename) const {
         }
         file.close();
         std::cout << "Board saved to " << filename << std::endl;
+        return true;
     }
+    return false;
 }
 
 bool Board::load_from(const std::string& filename) {
     std::ifstream file(filename);
-    _board.resize(8, std::vector<Piece>(8));
-    
-    std::cout << "Trying to load board from: " << filename << endl;
     if (file.is_open()) {
+        std::cout << "Trying to load board from: " << filename << endl;
+        _board.resize(8, std::vector<Piece>(8));
         for (int i = 7; i >= 0; --i) {
             for (int j = 0; j < 8; ++j) {
                 char symbol;
@@ -106,13 +111,30 @@ bool Board::load_from(const std::string& filename) {
         file.close();
         std::cout << "Board loaded from " << filename << ",\n"<< std::endl;
         print();
+        return true;
     }
+    return false;
+}
+
+void Board::score_table() const {
+    int white = score(Color::White);
+    int black = score(Color::Black);
+
+    std::cout << "White score: " << white << endl;
+    std::cout << "Black score: " << black << endl;
 }
 
 int Board::score(Color color) const {
     int score{0};
 
-
+    for (const auto& row : _board)
+        for (const auto& element : row)
+            if (element.get_color() == color) {
+                score += element.score();
+                if (is_under_attack(element)) {
+                    score -= element.score() / 2;
+                }
+            }
     return score;
 }
 
@@ -151,39 +173,120 @@ bool Board::is_valid_key(const char& key) const {
     for (char c : to_search)
         if (c == key)
             return true;
+
+    cout << "Key is not valid" << endl;;
     return false;
 }
 
 bool Board::is_valid_move(const string& move, const Color& current_turn) const {
-    const int start_index = move[0] - 'a';
-    const int start_num   = move[1] - '1';
-    const int end_index   = move[2] - 'a';
-    const int end_num     = move[3] - '1';
+    const unsigned int start_index = move[0] - 'a';
+    const unsigned int start_num   = move[1] - '1';
+    const unsigned int end_index   = move[2] - 'a';
+    const unsigned int end_num     = move[3] - '1';
 
-    const Piece& source = _board[start_index][start_num];
-    const Piece& dest   = _board[end_index][end_num];
+    const Position src_pos{static_cast<Rows>(start_index), start_num};
+    const Position dest_pos{static_cast<Rows>(end_index), end_num};
+
+    const Piece& src_piece  = _board[start_num][start_index];
+    const Piece& dest_piece = _board[end_num][end_index];
+
+    cout << "Src, " << src_piece << endl;
+    cout << "Dest, " << dest_piece << endl;
 
     // Can't move if current player does not exist in source
-    if (source.get_type() == PieceTypes::NoPiece ||
-            source.get_color() != current_turn)
-        return false;
-
+    if (src_piece.get_type() == PieceTypes::NoPiece ||
+            src_piece.get_color() != current_turn) {
+            cout << "Can't move if current player does not exist in source!" << endl;
+            return false;
+    }
     // Can't move if current player's piece exists in destination
-    else if (dest.get_type() != PieceTypes::NoPiece &&
-                dest.get_color() == current_turn)
+    else if (dest_piece.get_type() != PieceTypes::NoPiece &&
+                dest_piece.get_color() == current_turn) {
+        cout << "Can't move if current player's piece exists in destination" << endl;
         return false;
-
-    // TODO
-    // Check if King is under attack
-        // Check if King is the source piece
-        // else Error
+    }
+    else if (is_under_attack(PieceTypes::King, current_turn)){
+        // if King is under attack
+        if (src_piece.get_type() != PieceTypes::King)
+        {
+            return true;
+        }
+        else
+            return false;
+        
+        // TODO
+        // check if source piece can protect the king or can take destination piece
+    }
 
     // Check if source piece can move to destination
-        // Check if any piece exists through travel path
-        // else Error
-    // else Error
-        
+    if (src_piece.can_move(src_pos, dest_pos)) {
+        if (!is_path_free(src_piece.get_type(), src_pos, dest_pos))
+            return false;
+    }
+    
     return true;
 }
+
+bool Board::is_under_attack(const PieceTypes type, const Color& color) const {
+    return m_is_under_attack(find_position(find_piece(type, color)));
+}
+
+bool Board::is_under_attack(const Piece& piece) const {
+    return m_is_under_attack(find_position(piece));
+}
+
+bool Board::is_under_attack(const Position& dest) const {
+    return m_is_under_attack(dest);
+}
+
+
+bool Board::m_is_under_attack(const Position& dest) const {
+    Piece piece = at(dest);
+    for (const auto& row : _board)
+        for (const auto& element : row)
+                if (can_take(element, piece))
+                    return true;
+    return false;
+}
+
+
+bool Board::is_path_free(const PieceTypes type, const Position& src, const Position& dest) const {
+    // TODO
+    return true;
+}
+
+bool Board::can_take(const Piece& src, const Piece& dest) const {
+    // TODO
+    return false;
+}
+
+const Piece& Board::find_piece(const PieceTypes type, const Color& color) const {
+    return m_find_piece(type, color);
+}
+
+const Piece& Board::m_find_piece(const PieceTypes type, const Color& color) const {
+    for (const auto& row : _board)
+        for (const auto& element : row)
+            if (element.get_type() == type && element.get_color() == color)
+                return element;
+    return no_piece;
+}
+
+const Position Board::find_position(const Piece& piece) const {
+    Position pos;
+    auto type = piece.get_type();
+    auto color = piece.get_color();
+    for (int i = 0; i < 8; ++i)
+        for (int j = 0; j < 8; ++j) {
+            const auto& element = _board[i][j];
+            if (element.get_type() == type && element.get_color() == color) {
+                pos.x = static_cast<Rows>(i);
+                pos.y = j;
+                return pos;
+            }
+        }
+    return pos;
+}
+
 
 } // namespace chess_core
