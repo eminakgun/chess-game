@@ -3,18 +3,24 @@
 
 #include <vector>
 #include <types.hpp>
+#include <cctype>
 using namespace std;
 
-class Pieces
-{
-private:
-    std::vector<PieceTypes> _pieces;
+namespace chess_core {
 
-public:
-    Pieces(/* args */);
-    ~Pieces();
+    class Piece {
+    private:
+        Color _color;
+        PieceTypes _type;
 
-    int score() const;
-};
+    public:
+        explicit Piece(PieceTypes type=PieceTypes::Pawn, Color color=Color::White);
+        //~Piece();
+
+        int score() const;
+        string to_symbol() const;
+        static Piece from_symbol(char symbol);
+    };
+}
 
 #endif

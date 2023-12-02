@@ -8,27 +8,28 @@
 #include <pieces.hpp>
 #include <types.hpp>
 
-class Game
-{
-private:
-    Board _board;
-    Turn _turn;
-    string _move;
-    int _score = 0;
+namespace chess_core {
 
-    int score() const;
-    bool is_finished() const;
+    class Game {
+    private:
+        Board _board;
+        Turn _turn;
+        string _move;
+        int _score = 0;
 
-public:
-    Game(/* args */);
-    Game(Board& board);
-    ~Game();
+        int score() const;
+        bool is_finished() const;
 
-    void start();
-    void get_input();
-    bool validate_input() const;
-    string& get_suggestion() const;
-};
+    public:
+        Game(/* args */);
+        Game(Board& board, const std::string& board_path);
+        ~Game();
 
+        void start();
+        void get_input();
+        bool validate_input() const;
+        string& get_suggestion() const;
+    };
+}
 
 #endif

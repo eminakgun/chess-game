@@ -1,8 +1,19 @@
 #include <game.hpp>
 
-Game::Game(){}
+namespace chess_core {
 
-Game::Game(Board& board) : _board(board){}
+Game::Game() {
+    _board.init();
+}
+
+Game::Game(Board& board, const std::string& board_path) : _board(board){
+    if (!board_path.empty())
+    {
+        _board.load_from(board_path);
+    }
+    else
+        _board.init();
+}
 
 Game::~Game()
 {
@@ -37,6 +48,7 @@ void Game::get_input() {
 bool Game::validate_input() const {
     if ("exit" == _move)
     {
+        _board.save_to("board.txt");
         std::exit(0);
     }
     
@@ -51,3 +63,5 @@ string& Game::get_suggestion() const {
 bool Game::is_finished() const {
     return false;
 }
+
+} // namespace chess_core

@@ -3,15 +3,18 @@
 
 #include <iostream>
 
-enum class Turn : bool {Black = false, White = true};
+namespace chess_core {
 
-std::ostream& operator<<(std::ostream& lhs, const Turn turn);
+    enum class Color {Black, White};
+    enum class Turn : bool {Black = false, White = true};
 
-// Board Row characters
-enum Rows {a, b, c, d, e, f, g, h};
+    std::ostream& operator<<(std::ostream& lhs, const Turn turn);
 
-// Pieces
-enum PieceTypes {King, Queen, Rook, Knight, Bishop, Pawn};
+    // Board Row characters
+    enum Rows {a, b, c, d, e, f, g, h};
 
+    // Piece
+    enum class PieceTypes {King, Queen, Rook, Knight, Bishop, Pawn, NoPiece};
 
+    }
 #endif
