@@ -54,9 +54,83 @@ int main(int argc, char *argv[]) {
         board.play("h4g5", Color::White);
         board.print();
         board.score_table();
-        exit(1);        
+               
+        // board 2 single moves
+        board.load_from("test/board_2");
+        board.play("g2g4", Color::White); // valid
+
+
+        board.load_from("test/board_2");
+        board.play("c4b5", Color::White); // valid
+
+        board.load_from("test/board_2");
+        board.play("c4f2", Color::White); // ivalid
+
+        board.load_from("test/board_2");
+        board.play("e2e7", Color::White); // valid
+
+        board.load_from("test/board_2");
+        board.play("e2f3", Color::White); // ivalid
+
+        board.load_from("test/board_2");
+        board.play("a1h1", Color::White); // ivalid
+
+        board.load_from("test/board_2");
+        board.play("h1a1", Color::White); // ivalid
+
+        board.load_from("test/board_2");
+        board.play("d2f4", Color::White); // valid
+
+        board.load_from("test/board_2");
+        board.play("c2c4", Color::White); // ivalid
+
+        board.load_from("test/board_2");
+        board.play("f3g5", Color::White); // valid
+
+        board.load_from("test/board_2");
+        board.play("a1g1", Color::White); // valid
+
+        exit(1);
+
+        // board 2 game
+        board.init();
+        board.load_from("test/board_2"); //../
+        board.play("c4b5", Color::White);
+        board.play("a4b5", Color::Black);
+        board.play("e2b5", Color::White);
+        board.play("b8c6", Color::Black);
+        board.play("d4d5", Color::White);
+        board.play("a7a6", Color::Black);
+        board.play("b5b7", Color::White);
+        board.play("a8b8", Color::Black); // a8b8
+        board.play("b7a6", Color::White);
+        board.play("c6b4", Color::Black);
+        board.play("d2b4", Color::White);
+        
+        Board temp_board{board};
+
+        board.play("b8b4", Color::Black);
+        board.play("h2h3", Color::White);
+        board.play("g4c8", Color::Black);
+        board.play("a6e2", Color::White);
+        board.play("d6c5", Color::Black);
+        board.play("f2e1", Color::White);
+        board.print();
+        board.score_table();
+        exit(1); 
+
+        // continue game from temp_board
+       chess_core::Game game(temp_board);
+       game.set_turn(Color::Black);
+       game.play("e8d7");
+       game.play("a6c8");
+       game.play("h8d8");
+       game.play("c8d7");
+       game.start();
+
+        exit(1); 
     }
     
-    chess_core::Game game(board, board_path);
+    chess_core::Game game(board_path);
     game.start();
 }
