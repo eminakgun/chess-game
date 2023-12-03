@@ -122,11 +122,37 @@ Piece Piece::from_symbol(char symbol) {
 }
 
 bool Piece::can_move(const Position& src, const Position& dest) const {
-    // TODO determien if piece can move to dest
+    // TODO determine if piece can move to dest
+    int diff_y = dest.y - src.y; // better be const
+
+    if (Color::Black == _color && diff_y < 0)
+    {
+        diff_y = abs(diff_y);
+    }
+
+    cout << "Piece::can_move : " << *this << endl;
+    cout << "Source " << src;
+    cout << ", Dest pos:" << dest;
+    cout << ", diff_y: " << diff_y << endl;
+
     if (_type == PieceTypes::Pawn)
     {
-        ;/* code */
+        if (src.x != dest.x) // forward only
+            return false;
+        if (diff_y != 2)
+            return false;
+        if (diff_y == 2 &&
+            (Color::Black == _color && src.y != 7) ||
+                (Color::White == _color && src.y != 2))
+            return false;
+        
+        return true;
     }
+    else if (_type == PieceTypes::Knight)
+    {
+        /* code */
+    }
+    
     
     return true;
 }
