@@ -229,6 +229,7 @@ bool Board::is_valid_move(const string& move, const Color& current_turn) const {
 
     // Check if source piece can move to destination
     if (src_piece.can_move(src_pos, dest_pos)) {
+        cout << "Can move!" << endl;
         if (!is_path_free(src_piece.get_type(), src_pos, dest_pos))
             return false;
     }
@@ -263,7 +264,7 @@ bool Board::m_is_under_attack(const Position& dest) const {
 
 bool Board::is_path_free(const PieceTypes type, const Position& src, const Position& dest) const {
     // TODO
-    return false;
+    return true;
 }
 
 bool Board::can_take(const Piece& src, const Piece& dest) const {

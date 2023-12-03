@@ -34,6 +34,7 @@ namespace chess_core {
     Position to_position(const unsigned int column, const unsigned int row);
     void to_position(Position& pos, const unsigned int column, const unsigned int row);
     std::ostream& operator<<(std::ostream& lhs, const Position& pos);
+    bool operator==(const Position& lhs, const Position& rhs);
 
     }
 #endif

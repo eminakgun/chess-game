@@ -78,4 +78,8 @@ std::ostream& operator<<(std::ostream& lhs, const Position& pos) {
     return lhs;
 }
 
+bool operator==(const Position& lhs, const Position& rhs) {
+    return (lhs.x == rhs.x) && (lhs.y == rhs.y);
+}
+
 } // namespace chess_core

@@ -121,39 +121,82 @@ Piece Piece::from_symbol(char symbol) {
     }
 }
 
-bool Piece::can_move(const Position& src, const Position& dest) const {
-    // TODO determine if piece can move to dest
-    int diff_y = dest.y - src.y; // better be const
 
-    if (Color::Black == _color && diff_y < 0)
-    {
-        diff_y = std::abs(diff_y);
-    }
+bool Piece::can_move(const string& move) const {
+    const Position src_pos = chess_core::to_position(move[0] - 'a', move[1] - '1');
+    const Position dest_pos = chess_core::to_position(move[2] - 'a', move[3] - '1');
+
+    return m_can_move(src_pos, dest_pos);
+}
+
+
+bool Piece::can_move(const Position& src, const Position& dest) const {
+    return m_can_move(src, dest);
+}
+
+bool Piece::m_can_move(const Position& src, const Position& dest) const {
+    int diff_x = Color::White == _color ? dest.x - src.x : src.x - dest.x; // better be const
+    int diff_y = Color::White == _color ? dest.y - src.y : src.y - dest.y; // better be const
+    int abs_diff_x = std::abs(diff_x);
+    int abs_diff_y = std::abs(diff_y);
 
     cout << "Piece::can_move : " << *this << endl;
     cout << "Source " << src;
-    cout << ", Dest pos:" << dest;
+    cout << ", Dest " << dest;
+    cout << ", diff_x: " << diff_x;
     cout << ", diff_y: " << diff_y << endl;
+
+    // return if source and destination is the same
+    if (src == dest)
+        return false;
 
     if (_type == PieceTypes::Pawn)
     {
-        if (src.x != dest.x) // forward only
+        if (src.x != dest.x)
+        {
+            cout << "Pawn can only move in the same column!" << endl;
             return false;
-        if (diff_y != 2)
+        }
+        if (diff_y == 0)
             return false;
-        if (diff_y == 2 &&
-            (Color::Black == _color && src.y != 7) ||
-                (Color::White == _color && src.y != 2))
-            return false;
+        if (diff_y > 1)
+        {
+            if (diff_y != 2)
+                return false;
+            if (diff_y == 2 &&
+                 (Color::Black == _color && src.y != 7) ||
+                  (Color::White == _color && src.y != 2))
+                return false;
+        }
         
         return true;
     }
     else if (_type == PieceTypes::Knight)
     {
-        /* code */
+        if (abs_diff_y != 1 && abs_diff_y != 2)
+            return false;
+        if (abs_diff_x != 1 && abs_diff_x != 2)
+            return false;
+        if (abs_diff_x + abs_diff_y != 3)
+            return false;
+        return true;
     }
-    
-    
+    else if (_type == PieceTypes::Bishop) {
+        if (abs_diff_x != abs_diff_y)
+            return false;
+    }
+    else if (_type == PieceTypes::Rook) {
+        if (abs_diff_y != 0 && abs_diff_x != 0)
+            return false;
+    }
+    else if (_type == PieceTypes::King) {
+        if (abs_diff_y + abs_diff_x > 2)
+            return false;
+    }
+    else if (_type == PieceTypes::Queen) {
+        // there's no invalid moves for queen
+    }
+
     return true;
 }
 

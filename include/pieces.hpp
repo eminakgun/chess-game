@@ -11,6 +11,9 @@ namespace chess_core {
         PieceTypes _type;
         bool _status;
 
+        // Functions
+        bool m_can_move(const Position& src, const Position& dest) const;
+
     public:
         explicit Piece(PieceTypes type=PieceTypes::Pawn, Color color=Color::White);
         //~Piece();
@@ -24,6 +27,7 @@ namespace chess_core {
         string to_symbol() const;
         static Piece from_symbol(char symbol);
 
+        bool can_move(const string& move) const;
         bool can_move(const Position& src, const Position& dest) const;
     };
 }
