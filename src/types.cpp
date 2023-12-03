@@ -30,4 +30,13 @@ std::ostream& operator<<(std::ostream& lhs, const Color color) {
     return lhs;
 }
 
+Position to_position(const unsigned int row, const unsigned int column) {
+    return Position{static_cast<Rows>(row), column};
+}
+
+void to_position(Position& pos, const unsigned int row, const unsigned int column) {
+    pos.x = static_cast<Rows>(row);
+    pos.y = column;
+}
+
 } // namespace chess_core
