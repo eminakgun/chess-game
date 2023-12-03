@@ -10,6 +10,7 @@ namespace chess_core {
     class Board
     {
     private:
+        
         std::vector<std::vector<Piece>> _board;
         Piece no_piece{PieceTypes::NoPiece};
 
@@ -18,6 +19,9 @@ namespace chess_core {
         const Piece& m_find_piece(const PieceTypes type, const Color& color) const;
 
     public:
+
+        Position src_pos;
+        Position dest_pos;
 
         // Big Three
         Board(/* args */);
@@ -50,7 +54,10 @@ namespace chess_core {
         bool is_under_attack(const Position& pos) const;
         bool is_under_attack(const Piece& piece) const;
         
+        // find_peace overloads
         const Piece& find_piece(const PieceTypes type, const Color& color) const;
+        const Piece& find_piece(const Position pos) const;
+        
         const Position find_position(const Piece& piece) const;
     };
     

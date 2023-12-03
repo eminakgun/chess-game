@@ -139,6 +139,16 @@ int Board::score(Color color) const {
 }
 
 void Board::play(const string& move) {
+    const unsigned int start_index = move[0] - 'a';
+    const unsigned int start_num   = move[1] - '1';
+    const unsigned int end_index   = move[2] - 'a';
+    const unsigned int end_num     = move[3] - '1';
+
+    src_pos = chess_core::to_position(start_index, start_num);
+    dest_pos = chess_core::to_position(end_index, end_num);
+
+    _board[end_num][end_index] = find_piece(src_pos);
+    _board[start_num][start_index] = Piece(PieceTypes::NoPiece);
 
 }
 
@@ -184,8 +194,8 @@ bool Board::is_valid_move(const string& move, const Color& current_turn) const {
     const unsigned int end_index   = move[2] - 'a';
     const unsigned int end_num     = move[3] - '1';
 
-    const Position src_pos{static_cast<Rows>(start_index), start_num};
-    const Position dest_pos{static_cast<Rows>(end_index), end_num};
+    const Position src_pos = chess_core::to_position(start_index, start_num);
+    const Position dest_pos = chess_core::to_position(end_index, end_num);
 
     const Piece& src_piece  = _board[start_num][start_index];
     const Piece& dest_piece = _board[end_num][end_index];
@@ -258,6 +268,10 @@ bool Board::is_path_free(const PieceTypes type, const Position& src, const Posit
 bool Board::can_take(const Piece& src, const Piece& dest) const {
     // TODO
     return false;
+}
+
+const Piece& Board::find_piece(const Position pos) const {
+    return at(pos);
 }
 
 const Piece& Board::find_piece(const PieceTypes type, const Color& color) const {
