@@ -24,9 +24,9 @@ namespace chess_core {
         Position dest_pos;
 
         // Big Three
-        Board(/* args */);
+        Board();
+        Board(const Board& board);
         Board(const std::string& filename);
-        //Board(const Board board);
         ~Board();
 
         // Status Interface
@@ -47,7 +47,7 @@ namespace chess_core {
         bool is_valid_key(const char& key) const;
         bool is_valid_move(const string& move, const Color& current_turn) const;
 
-        bool can_take(const Piece& src, const Piece& dest) const;
+        bool can_take(const Position& src, const Position& dest) const;
         bool is_path_free(const PieceTypes type, const Position& src, const Position& dest) const;
         
         // is_under_attack overloads

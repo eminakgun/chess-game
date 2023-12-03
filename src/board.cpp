@@ -2,13 +2,20 @@
 
 namespace chess_core {
 
-Board::Board(/* args */)
-{
+Board::Board(){}
+
+Board::Board(const Board& board) {
+    _board.resize(8, std::vector<Piece>(8));
+    for (int i = 0; i < 8; ++i) // rows
+        for (int j = 0; j < 8; ++j) // column
+            _board[i][j] = board._board[i][j];
 }
 
-Board::~Board()
-{
+Board::Board(const std::string& filename) {
+    load_from(filename);
 }
+
+Board::~Board(){}
 
 void Board::init() {
     _board.resize(8, std::vector<Piece>(8));
@@ -139,13 +146,14 @@ int Board::score(Color color) const {
 }
 
 bool Board::play(const string& move, const Color& color) {
+    cout << "attempted move for " << color << ": " << move << endl;
     if (!can_play(move, color)) {
         std::cout << "Invalid input!" << endl; 
         return false;
     }
     else
         make_move(move);
-
+    print();
     return true;
 }
 
@@ -227,6 +235,8 @@ bool Board::is_valid_move(const string& move, const Color& current_turn) const {
     }
     else if (is_under_attack(PieceTypes::King, current_turn)){
         // if King is under attack
+        /*
+        
         if (src_piece.get_type() != PieceTypes::King)
         {
             return true;
@@ -236,6 +246,7 @@ bool Board::is_valid_move(const string& move, const Color& current_turn) const {
         
         // TODO
         // check if source piece can protect the king or can take destination piece
+        */
     }
 
     // Check if source piece can move to destination
@@ -244,12 +255,12 @@ bool Board::is_valid_move(const string& move, const Color& current_turn) const {
         if (!is_path_free(src_piece.get_type(), src_pos, dest_pos))
             return false;
     }
-    else // can't move
-        if (src_piece.get_type() == PieceTypes::Pawn &&
-                !can_take(src_piece, dest_piece))
-            return false;
-        else
-            return false;
+    
+    if (src_piece.get_type() == PieceTypes::Pawn &&
+            !can_take(src_pos, dest_pos))
+        return false;
+    else
+        return false;
     
     return true;
 }
@@ -268,10 +279,9 @@ bool Board::is_under_attack(const Position& dest) const {
 
 
 bool Board::m_is_under_attack(const Position& dest) const {
-    Piece piece = at(dest);
-    for (const auto& row : _board)
-        for (const auto& element : row)
-                if (can_take(element, piece))
+    for (int i = 0; i < 8; ++i) // rows
+        for (int j = 0; j < 8; ++j)// column
+                if (can_take(to_position(j, i), dest))
                     return true;
     return false;
 }
@@ -303,15 +313,15 @@ bool Board::is_path_free(const PieceTypes type, const Position& src, const Posit
     return true;
 }
 
-bool Board::can_take(const Piece& src, const Piece& dest) const {
-    const Position src_pos = find_position(src);
-    const Position dest_pos = find_position(dest);
-    const int diff_x = dest_pos.x - src_pos.x;
-    const int diff_y = dest_pos.y - src_pos.y;
+bool Board::can_take(const Position& src, const Position& dest) const {
+    const Piece& src_p = at(src);
+    const Piece& dest_p = at(dest);
+    const int diff_x = dest.x - src.x;
+    const int diff_y = dest.y - src.y;
 
     // Rule for Pawn       
-    if (dest.get_type() != PieceTypes::NoPiece) {
-        if (src.get_type() == PieceTypes::Pawn)
+    if (dest_p.get_type() != PieceTypes::NoPiece) {
+        if (src_p.get_type() == PieceTypes::Pawn)
             if (!(std::abs(diff_x) == 1 && std::abs(diff_x) == 1))
                 return false;
     }
@@ -342,7 +352,8 @@ const Position Board::find_position(const Piece& piece) const {
     for (int i = 0; i < 8; ++i) // rows
         for (int j = 0; j < 8; ++j) { // column
             const auto& element = _board[i][j];
-            if (element.get_type() == type && element.get_color() == color) {
+            //if (element.get_type() == type && element.get_color() == color) {
+            if (&piece == &element) {
                 pos.x = j;
                 pos.y = i;
                 return pos;
