@@ -2,7 +2,9 @@
 
 namespace chess_core {
 
-Board::Board(){}
+Board::Board(){
+    init();
+}
 
 Board::Board(const Board& board) {
     _board.resize(8, std::vector<Piece>(8));
@@ -12,7 +14,10 @@ Board::Board(const Board& board) {
 }
 
 Board::Board(const std::string& filename) {
-    load_from(filename);
+    if (!filename.empty())
+        load_from(filename);
+    else
+        init();
 }
 
 Board::~Board(){}
