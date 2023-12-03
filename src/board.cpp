@@ -151,7 +151,7 @@ int Board::score(Color color) const {
 }
 
 bool Board::play(const string& move, const Color& color) {
-    cout << "attempted move for " << color << ": " << move << endl;
+    //cout << "attempted move for " << color << ": " << move << endl;
     if (!can_play(move, color)) {
         std::cout << "Invalid input!" << endl; 
         return false;
@@ -223,8 +223,8 @@ bool Board::is_valid_move(const string& move, const Color& current_turn) const {
     const Piece& src_piece  = _board[start_num][start_index];
     const Piece& dest_piece = _board[end_num][end_index];
 
-    cout << "Src, " << src_piece << endl;
-    cout << "Dest, " << dest_piece << endl;
+    //cout << "Src, " << src_piece << endl;
+    //cout << "Dest, " << dest_piece << endl;
 
     // Can't move if current player does not exist in source
     if (src_piece.get_type() == PieceTypes::NoPiece ||
@@ -256,7 +256,7 @@ bool Board::is_valid_move(const string& move, const Color& current_turn) const {
 
     // Check if source piece can move to destination
     if (src_piece.can_move(src_pos, dest_pos)) {
-        cout << "Can move!" << endl;
+        //cout << "Can move!" << endl;
         if (!is_path_free(src_piece.get_type(), src_pos, dest_pos))
             return false;
     }
