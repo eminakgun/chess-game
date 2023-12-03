@@ -47,6 +47,13 @@ int main(int argc, char *argv[]) {
         cout << board.is_valid_move("a2a4", Color::White) << endl;
         cout << "Pawn e7e5: " << board.is_valid_move("e7e5", Color::Black) << endl;
 
+        // Test pawn takes
+        board.init();
+        board.play("h2h4", Color::White);
+        board.play("g7g5", Color::Black);
+        board.play("h4g5", Color::White);
+        board.print();
+        board.score_table();
         exit(1);        
     }
     
