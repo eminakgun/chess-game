@@ -22,21 +22,20 @@ Game::~Game()
 
 void Game::start() {
     cout << "Welcome to the Chess Game!" << endl;
-    
+
     while(!is_finished()) {
         _board.print();
         get_input();
         if (validate_input())
         {
             _board.play(_move);
+            if (_turn == Turn::Black) 
+                _turn = Turn::White;
+            else
+                _turn = Turn::Black;
         }
         else
-            _board.play(get_suggestion());
-        
-        if (_turn == Turn::Black) 
-            _turn = Turn::White;
-        else
-            _turn = Turn::Black;
+            get_suggestion();   
     }
 }
 
@@ -63,6 +62,9 @@ void Game::get_input() {
         _board.save_to(filename);
         get_input();
     }
+    else if ("suggest" == _move) {
+        get_suggestion();
+    }
 }
 
 bool Game::validate_input() const {
@@ -75,10 +77,10 @@ bool Game::validate_input() const {
     return true;
 }
 
-string Game::get_suggestion() const {
-    string suggestion;
-
-    return suggestion;
+void Game::get_suggestion() const {
+    string suggestion = "a2a3";
+    //TODO Implement
+    std::cout << "You can try this move: " << suggestion << endl;
 }
 
 bool Game::is_finished() const {
