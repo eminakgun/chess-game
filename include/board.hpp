@@ -11,7 +11,7 @@ namespace chess_core {
     {
     private:
         
-        std::vector<std::vector<Piece>> _board;
+        BoardArray _board;
         Piece no_piece{PieceTypes::NoPiece};
 
         // Functions
