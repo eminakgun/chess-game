@@ -80,7 +80,7 @@ void Board::print() const {
 }
 
 bool Board::save_to(const std::string& filename) const {
-    std::ofstream file(filename);
+    std::ofstream file(filename + ".txt");
     if (file.is_open()) {
         for (int i = 7; i >= 0; --i) {
             for (int j = 0; j < 8; ++j) {
@@ -96,7 +96,7 @@ bool Board::save_to(const std::string& filename) const {
 }
 
 bool Board::load_from(const std::string& filename) {
-    std::ifstream file(filename);
+    std::ifstream file(filename + ".txt");
     if (file.is_open()) {
         std::cout << "Trying to load board from: " << filename << endl;
         _board.resize(8, std::vector<Piece>(8));
@@ -184,7 +184,7 @@ bool Board::is_valid_key(const char& key) const {
         if (c == key)
             return true;
 
-    cout << "Key is not valid" << endl;;
+    //cout << "Key is not valid" << endl;;
     return false;
 }
 
