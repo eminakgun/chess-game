@@ -28,7 +28,7 @@ namespace chess_core {
         void start();
         void get_input();
         bool validate_input() const;
-        string get_suggestion() const;
+        void get_suggestion() const;
     };
 }
 
