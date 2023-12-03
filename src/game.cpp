@@ -84,6 +84,10 @@ void Game::get_input() {
     else if ("suggest" == _move) {
         get_suggestion();
     }
+    else if ("score" == _move) {
+        _board.score_table();
+        get_input();
+    }
 }
 
 void Game::get_suggestion() const {
