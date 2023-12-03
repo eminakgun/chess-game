@@ -6,18 +6,23 @@ Game::Game() : _turn(Color::White){
     _board.init();
 }
 
-Game::Game(Board& board, const std::string& board_path) 
-    : _board(board), _turn(Color::White) {
-    if (!board_path.empty())
+Game::Game(const std::string& board_path) {
+     if (!board_path.empty())
     {
         _board.load_from(board_path);
     }
-    else
-        _board.init();
+}
+
+Game::Game(Board& board) : _board(board), _turn(Color::White) {
 }
 
 Game::~Game()
 {
+    // there's no dynamically alocated objects
+}
+
+void Game::set_turn(Color turn) {
+    _turn = turn;
 }
 
 void Game::start() {
@@ -26,18 +31,31 @@ void Game::start() {
     while(!is_finished()) {
         _board.print();
         get_input();
-        if (_board.play(_move, _turn)) {
-            if (_turn == Color::Black) 
-                _turn = Color::White;
-            else
-                _turn = Color::Black;
-        }
-        else
-            get_suggestion();
+        play();
     }
 
     cout << "Game is Over!" << endl;
     _board.score_table();
+}
+
+void Game::play() {
+    m_play();
+}
+
+void Game::play(const string& move) {
+    _move = move;
+    m_play();
+}
+
+void Game::m_play() {
+    if (_board.play(_move, _turn)) {
+        if (_turn == Color::Black) 
+            _turn = Color::White;
+        else
+            _turn = Color::Black;
+    }
+    else
+        get_suggestion();
 }
 
 void Game::get_input() {

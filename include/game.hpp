@@ -17,18 +17,26 @@ namespace chess_core {
         string _move;
         int _score = 0;
 
-        int score() const;
-        bool is_finished() const;
+        void m_play();
+        
 
     public:
-        Game(/* args */);
-        Game(Board& board, const std::string& board_path);
+        Game();
+        Game(Board& board);
+        Game(const std::string& board_path);
         ~Game();
 
+        void set_turn(Color turn);
+
         void start();
+        void play();
+        void play(const string& move);
         void get_input();
         bool validate_input() const;
         void get_suggestion() const;
+
+        int score() const;
+        bool is_finished() const;
     };
 }
 
