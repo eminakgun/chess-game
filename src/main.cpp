@@ -40,12 +40,12 @@ int main(int argc, char *argv[]) {
         cout << "Rook can move: " << rook.can_move("d4a6") << endl;
         cout << "Rook can move: " << rook.can_move("d4b6") << endl;
 
-        /*  
-            board.init();
-            board.print();
-            cout << board.is_valid_move("a2a3", Color::White) << endl;
-            exit(1);
-        */
+        // Initial board tests
+        board.init();
+        board.print();
+        cout << board.is_valid_move("a2a3", Color::White) << endl;
+        cout << board.is_valid_move("a2a4", Color::White) << endl;
+        cout << "Pawn e7e5: " << board.is_valid_move("e7e5", Color::Black) << endl;
 
         exit(1);        
     }
