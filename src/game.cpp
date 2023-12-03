@@ -2,11 +2,12 @@
 
 namespace chess_core {
 
-Game::Game() {
+Game::Game() : _turn(Turn::White){
     _board.init();
 }
 
-Game::Game(Board& board, const std::string& board_path) : _board(board){
+Game::Game(Board& board, const std::string& board_path) 
+    : _board(board), _turn(Turn::White) {
     if (!board_path.empty())
     {
         _board.load_from(board_path);
@@ -21,9 +22,9 @@ Game::~Game()
 
 void Game::start() {
     cout << "Welcome to the Chess Game!" << endl;
-    _board.print();
-
+    
     while(!is_finished()) {
+        _board.print();
         get_input();
         if (validate_input())
         {
