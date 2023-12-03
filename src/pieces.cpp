@@ -140,11 +140,13 @@ bool Piece::m_can_move(const Position& src, const Position& dest) const {
     int abs_diff_x = std::abs(diff_x);
     int abs_diff_y = std::abs(diff_y);
 
-    cout << "Piece::can_move : " << *this << endl;
-    cout << "Source " << src;
-    cout << ", Dest " << dest;
-    cout << ", diff_x: " << diff_x;
-    cout << ", diff_y: " << diff_y << endl;
+    // cout << "Piece::can_move : " << *this << endl;
+    // cout << "Source " << src;
+    // cout << ", Dest " << dest;
+    // cout << ", diff_x: " << diff_x;
+    // cout << ", diff_y: " << diff_y << endl;
+    // cout << ", abs_diff_x: " << abs_diff_x;
+    // cout << ", abs_diff_y: " << abs_diff_y << endl;
 
     // return if source and destination is the same
     if (src == dest)

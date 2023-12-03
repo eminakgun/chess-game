@@ -158,7 +158,6 @@ bool Board::play(const string& move, const Color& color) {
     }
     else
         make_move(move);
-    print();
     return true;
 }
 
@@ -262,6 +261,8 @@ bool Board::is_valid_move(const string& move, const Color& current_turn) const {
     }
     else if (src_piece.get_type() == PieceTypes::Pawn &&
             !can_take(src_pos, dest_pos))
+        return false;
+    else // since can't move already
         return false;
     
     return true;
