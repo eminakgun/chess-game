@@ -14,11 +14,12 @@ namespace chess_core {
     enum class Turn : bool {Black = false, White = true};
 
     // << overloads
-    std::ostream& operator<<(std::ostream& lhs, const Turn turn);
-    std::ostream& operator<<(std::ostream& lhs, const Color color);
+    std::ostream& operator<<(std::ostream& lhs, const Turn& turn);
+    std::ostream& operator<<(std::ostream& lhs, const Color& color);
 
     // Board Row characters
     enum class Rows : int {a = 0, b = 1, c = 2, d = 3, e = 4, f = 5, g = 6, h = 7};
+    std::ostream& operator<<(std::ostream& lhs, const Rows& row);
 
     // Piece
     enum class PieceTypes {King, Queen, Rook, Knight, Bishop, Pawn, NoPiece};
@@ -26,13 +27,13 @@ namespace chess_core {
     // Position data type
     struct Position
     {
-        Rows x;
+        unsigned int x;
         unsigned int y;
     };
 
-    Position to_position(const unsigned int row, const unsigned int column);
-    void to_position(Position& pos, const unsigned int row, const unsigned int column);
-    
+    Position to_position(const unsigned int column, const unsigned int row);
+    void to_position(Position& pos, const unsigned int column, const unsigned int row);
+    std::ostream& operator<<(std::ostream& lhs, const Position& pos);
 
     }
 #endif
