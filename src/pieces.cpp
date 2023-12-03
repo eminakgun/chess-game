@@ -152,22 +152,18 @@ bool Piece::m_can_move(const Position& src, const Position& dest) const {
 
     if (_type == PieceTypes::Pawn)
     {
-        if (src.x != dest.x)
-        {
+        if (src.x != dest.x) {
             cout << "Pawn can only move in the same column!" << endl;
             return false;
         }
         if (diff_y == 0)
             return false;
-        if (diff_y > 1)
-        {
-            if (diff_y != 2)
+        if (diff_y == 2 &&
+              ((Color::Black == _color && src.y != 6) ||
+                (Color::White == _color && src.y != 1)))
                 return false;
-            if (diff_y == 2 &&
-                 (Color::Black == _color && src.y != 7) ||
-                  (Color::White == _color && src.y != 2))
+        if (diff_y > 2)
                 return false;
-        }
         
         return true;
     }
