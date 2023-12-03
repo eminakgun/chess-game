@@ -260,11 +260,8 @@ bool Board::is_valid_move(const string& move, const Color& current_turn) const {
         if (!is_path_free(src_piece.get_type(), src_pos, dest_pos))
             return false;
     }
-    
-    if (src_piece.get_type() == PieceTypes::Pawn &&
+    else if (src_piece.get_type() == PieceTypes::Pawn &&
             !can_take(src_pos, dest_pos))
-        return false;
-    else
         return false;
     
     return true;
@@ -297,22 +294,23 @@ bool Board::is_path_free(const PieceTypes type, const Position& src, const Posit
     {
         const int diff_x = dest.x - src.x;
         const int diff_y = dest.y - src.y;
+        const int d_pos = abs(diff_x) + abs(diff_y);
         const unsigned int x_incr = (diff_x != 0) ? (diff_x > 0 ? 1 : -1) : 0;
         const unsigned int y_incr = (diff_y != 0) ? (diff_y > 0 ? 1 : -1) : 0;
         unsigned int x_delta = x_incr;
         unsigned int y_delta = y_incr;
 
-        for (int i = 0; i < max(abs(diff_x), abs(diff_y)); i++)
-        {
-            Position projected = Position{src.x+ x_delta, src.y + y_delta};
-            cout << "Check position " << projected << endl;
-            if (at(projected).get_type() != PieceTypes::NoPiece) {
-                cout << "Found piece at " << projected << endl;
-                return false;
+        if (!(d_pos == 1 || d_pos == 2))
+            for (int i = 0; i < max(abs(diff_x), abs(diff_y)) - 1; i++) {
+                Position projected = Position{src.x+ x_delta, src.y + y_delta};
+                cout << "Check position " << projected << endl;
+                if (at(projected).get_type() != PieceTypes::NoPiece) {
+                    cout << "Found piece at " << projected << endl;
+                    return false;
+                }
+                x_delta += x_incr;
+                y_delta += y_incr;
             }
-            x_delta += x_incr;
-            y_delta += y_incr;
-        }
     }
 
     return true;

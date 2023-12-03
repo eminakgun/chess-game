@@ -2,13 +2,13 @@
 
 namespace chess_core {
 
-Game::Game() : _turn(Color::White){
+Game::Game() : _turn(Color::White) {
     _board.init();
 }
 
-Game::Game(const std::string& board_path) {
-     if (!board_path.empty())
-    {
+Game::Game(const std::string& board_path) 
+    : _turn(Color::White) {
+    if (!board_path.empty()) {
         _board.load_from(board_path);
     }
 }
@@ -96,6 +96,9 @@ bool Game::is_finished() const {
     // check if any of the Kings are taken
     Piece white_k = _board.find_piece(PieceTypes::King, Color::White);
     Piece black_k = _board.find_piece(PieceTypes::King, Color::Black);
+
+    // cout << white_k << endl;
+    // cout << black_k << endl;
 
     if (white_k.get_type() == PieceTypes::NoPiece ||
          black_k.get_type() == PieceTypes::NoPiece)

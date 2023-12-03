@@ -90,8 +90,6 @@ int main(int argc, char *argv[]) {
         board.load_from("test/board_2");
         board.play("a1g1", Color::White); // valid
 
-        exit(1);
-
         // board 2 game
         board.init();
         board.load_from("test/board_2"); //../
@@ -102,7 +100,7 @@ int main(int argc, char *argv[]) {
         board.play("d4d5", Color::White);
         board.play("a7a6", Color::Black);
         board.play("b5b7", Color::White);
-        board.play("a8b8", Color::Black); // a8b8
+        board.play("a8b8", Color::Black);
         board.play("b7a6", Color::White);
         board.play("c6b4", Color::Black);
         board.play("d2b4", Color::White);
@@ -115,9 +113,7 @@ int main(int argc, char *argv[]) {
         board.play("a6e2", Color::White);
         board.play("d6c5", Color::Black);
         board.play("f2e1", Color::White);
-        board.print();
         board.score_table();
-        exit(1); 
 
         // continue game from temp_board
        chess_core::Game game(temp_board);
