@@ -1,11 +1,8 @@
 #ifndef _PIECES_H
 #define _PIECES_H
 
-#include <vector>
-#include <types.hpp>
 #include <cctype>
-using namespace std;
-
+#include <types.hpp>
 namespace chess_core {
 
     class Piece {

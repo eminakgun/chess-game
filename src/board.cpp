@@ -63,7 +63,7 @@ void Board::init() {
 
 
 const Piece& Board::at(const Position& pos) const {
-    return _board.at(pos.y).at(static_cast<int>(pos.x));
+    return _board.at(pos.y).at(pos.x);
 }
 
 void Board::print() const {
@@ -149,7 +149,6 @@ void Board::play(const string& move) {
 
     _board[end_num][end_index] = find_piece(src_pos);
     _board[start_num][start_index] = Piece(PieceTypes::NoPiece);
-
 }
 
 bool Board::can_play(const string& move, const Color& current_turn) const {
@@ -233,6 +232,8 @@ bool Board::is_valid_move(const string& move, const Color& current_turn) const {
         if (!is_path_free(src_piece.get_type(), src_pos, dest_pos))
             return false;
     }
+    else
+        return false;
     
     return true;
 }
@@ -262,7 +263,7 @@ bool Board::m_is_under_attack(const Position& dest) const {
 
 bool Board::is_path_free(const PieceTypes type, const Position& src, const Position& dest) const {
     // TODO
-    return true;
+    return false;
 }
 
 bool Board::can_take(const Piece& src, const Piece& dest) const {
@@ -290,12 +291,12 @@ const Position Board::find_position(const Piece& piece) const {
     Position pos;
     auto type = piece.get_type();
     auto color = piece.get_color();
-    for (int i = 0; i < 8; ++i)
-        for (int j = 0; j < 8; ++j) {
+    for (int i = 0; i < 8; ++i) // rows
+        for (int j = 0; j < 8; ++j) { // column
             const auto& element = _board[i][j];
             if (element.get_type() == type && element.get_color() == color) {
-                pos.x = static_cast<Rows>(i);
-                pos.y = j;
+                pos.x = j;
+                pos.y = i;
                 return pos;
             }
         }

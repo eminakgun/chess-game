@@ -127,7 +127,7 @@ bool Piece::can_move(const Position& src, const Position& dest) const {
 
     if (Color::Black == _color && diff_y < 0)
     {
-        diff_y = abs(diff_y);
+        diff_y = std::abs(diff_y);
     }
 
     cout << "Piece::can_move : " << *this << endl;
