@@ -263,7 +263,27 @@ bool Board::m_is_under_attack(const Position& dest) const {
 
 
 bool Board::is_path_free(const PieceTypes type, const Position& src, const Position& dest) const {
-    // TODO
+    if (type != PieceTypes::Knight && type != PieceTypes::King && type != PieceTypes::Pawn)
+    {
+        const int diff_x = dest.x - src.x;
+        const int diff_y = dest.y - src.y;
+        const unsigned int x_incr = (diff_x != 0) ? (diff_x > 0 ? 1 : -1) : 0;
+        const unsigned int y_incr = (diff_y != 0) ? (diff_y > 0 ? 1 : -1) : 0;
+        unsigned int x_delta = 0;
+        unsigned int y_delta = 0;
+
+        for (int i = 0; i < max(abs(diff_x), abs(diff_y)); i++)
+        {
+            Position projected = Position{src.x+ x_delta, src.y + y_delta};
+            if (at(projected).get_type() == PieceTypes::NoPiece) {
+                cout << "Found piece at " << projected << endl;
+                return false;
+            }
+            x_delta += x_incr;
+            y_delta += y_incr;
+        }
+    }
+
     return true;
 }
 
