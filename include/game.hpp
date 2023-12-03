@@ -13,7 +13,7 @@ namespace chess_core {
     class Game {
     private:
         Board _board;
-        Turn _turn;
+        Color _turn;
         string _move;
         int _score = 0;
 

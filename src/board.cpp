@@ -132,13 +132,24 @@ int Board::score(Color color) const {
             if (element.get_color() == color) {
                 score += element.score();
                 if (is_under_attack(element)) {
-                    score -= element.score() / 2;
+                    //score -= element.score() / 2;
                 }
             }
     return score;
 }
 
-void Board::play(const string& move) {
+bool Board::play(const string& move, const Color& color) {
+    if (!can_play(move, color)) {
+        std::cout << "Invalid input!" << endl; 
+        return false;
+    }
+    else
+        make_move(move);
+
+    return true;
+}
+
+void Board::make_move(const string& move) { 
     const unsigned int start_index = move[0] - 'a';
     const unsigned int start_num   = move[1] - '1';
     const unsigned int end_index   = move[2] - 'a';

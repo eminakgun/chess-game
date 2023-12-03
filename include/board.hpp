@@ -39,7 +39,8 @@ namespace chess_core {
         bool load_from(const std::string& filename);
 
         void init();
-        void play(const string& move);
+        bool play(const string& move, const Color& color);
+        void make_move(const string& move);
         
         // Query Interface
         bool can_play(const string& move, const Color& current_turn) const;

@@ -2,12 +2,12 @@
 
 namespace chess_core {
 
-Game::Game() : _turn(Turn::White){
+Game::Game() : _turn(Color::White){
     _board.init();
 }
 
 Game::Game(Board& board, const std::string& board_path) 
-    : _board(board), _turn(Turn::White) {
+    : _board(board), _turn(Color::White) {
     if (!board_path.empty())
     {
         _board.load_from(board_path);
@@ -26,17 +26,18 @@ void Game::start() {
     while(!is_finished()) {
         _board.print();
         get_input();
-        if (validate_input())
-        {
-            _board.play(_move);
-            if (_turn == Turn::Black) 
-                _turn = Turn::White;
+        if (_board.play(_move, _turn)) {
+            if (_turn == Color::Black) 
+                _turn = Color::White;
             else
-                _turn = Turn::Black;
+                _turn = Color::Black;
         }
         else
-            get_suggestion();   
+            get_suggestion();
     }
+
+    cout << "Game is Over!" << endl;
+    _board.score_table();
 }
 
 void Game::get_input() {
@@ -67,23 +68,21 @@ void Game::get_input() {
     }
 }
 
-bool Game::validate_input() const {
-    const Color current_color = _turn == Turn::Black ? Color::Black : Color::White;
-    
-    if (!_board.can_play(_move, current_color)) {
-        std::cout << "Invalid input!" << endl; 
-        return false;
-    }
-    return true;
-}
-
 void Game::get_suggestion() const {
     string suggestion = "a2a3";
-    //TODO Implement
+    //TODO Implement suggestion algorithm, i.e best move function
     std::cout << "You can try this move: " << suggestion << endl;
 }
 
 bool Game::is_finished() const {
+    // check if any of the Kings are taken
+    Piece white_k = _board.find_piece(PieceTypes::King, Color::White);
+    Piece black_k = _board.find_piece(PieceTypes::King, Color::Black);
+
+    if (white_k.get_type() == PieceTypes::NoPiece ||
+         black_k.get_type() == PieceTypes::NoPiece)
+        return true;
+    
     return false;
 }
 
