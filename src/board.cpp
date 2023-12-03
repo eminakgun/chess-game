@@ -233,8 +233,12 @@ bool Board::is_valid_move(const string& move, const Color& current_turn) const {
         if (!is_path_free(src_piece.get_type(), src_pos, dest_pos))
             return false;
     }
-    else
-        return false;
+    else // can't move
+        if (src_piece.get_type() == PieceTypes::Pawn &&
+                !can_take(src_piece, dest_piece))
+            return false;
+        else
+            return false;
     
     return true;
 }
@@ -289,8 +293,19 @@ bool Board::is_path_free(const PieceTypes type, const Position& src, const Posit
 }
 
 bool Board::can_take(const Piece& src, const Piece& dest) const {
-    // TODO
-    return false;
+    const Position src_pos = find_position(src);
+    const Position dest_pos = find_position(dest);
+    const int diff_x = dest_pos.x - src_pos.x;
+    const int diff_y = dest_pos.y - src_pos.y;
+
+    // Rule for Pawn       
+    if (dest.get_type() != PieceTypes::NoPiece) {
+        if (src.get_type() == PieceTypes::Pawn)
+            if (!(std::abs(diff_x) == 1 && std::abs(diff_x) == 1))
+                return false;
+    }
+    
+    return true;
 }
 
 const Piece& Board::find_piece(const Position pos) const {
