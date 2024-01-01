@@ -5,6 +5,7 @@
 #include <pieces.hpp>
 #include <types.hpp>
 #include <globals.hpp>
+#include <string>
 
 namespace chess_core {
     class Board
@@ -41,6 +42,7 @@ namespace chess_core {
         void init();
         bool play(const string& move, const Color& color);
         void make_move(const string& move);
+        vector<string> get_possible_moves(const Color& color) const;
         
         // Query Interface
         bool can_play(const string& move, const Color& current_turn) const;

@@ -198,4 +198,22 @@ bool Piece::m_can_move(const Position& src, const Position& dest) const {
     return true;
 }
 
+vector<string> Piece::possible_moves() const {
+    std::vector<string> moves;
+    
+    if (_type == PieceTypes::Pawn) {
+    }
+    else if (_type == PieceTypes::Knight) {
+    }
+    else if (_type == PieceTypes::Bishop) {
+    }
+    else if (_type == PieceTypes::Rook) {
+    }
+    else if (_type == PieceTypes::King) {
+    }
+    else if (_type == PieceTypes::Queen) {
+    }
+    return moves;
+}
+
 } // namespace chess_core

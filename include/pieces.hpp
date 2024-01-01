@@ -29,6 +29,8 @@ namespace chess_core {
 
         bool can_move(const string& move) const;
         bool can_move(const Position& src, const Position& dest) const;
+
+        vector<string> possible_moves() const;
     };
 }
 

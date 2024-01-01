@@ -174,6 +174,17 @@ void Board::make_move(const string& move) {
     _board[start_num][start_index] = Piece(PieceTypes::NoPiece);
 }
 
+vector<string> Board::get_possible_moves(const Color& color) const {
+    vector<string> moves;
+    for (const auto& row : _board)
+        for (const auto& element : row)
+            if (color == element.get_color())
+                for (const auto& move: element.possible_moves())
+                    if (element.can_move(move))
+                        moves.push_back("TODO");
+    return moves;
+}
+
 bool Board::can_play(const string& move, const Color& current_turn) const {
 
     if (move.size() != 4)

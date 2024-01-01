@@ -34,6 +34,7 @@ namespace chess_core {
         void get_input();
         bool validate_input() const;
         void get_suggestion() const;
+        string minimax(const Board& board, int depth, Color& color, int& best_score);
 
         int score() const;
         bool is_finished() const;

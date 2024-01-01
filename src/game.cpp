@@ -93,7 +93,40 @@ void Game::get_input() {
 void Game::get_suggestion() const {
     string suggestion = "a2a3";
     //TODO Implement suggestion algorithm, i.e best move function
+
+    int best_score = 0;
+    suggestion = minimax(_board, 10, _turn, best_score); // 10 move depth
+
+
     std::cout << "You can try this move: " << suggestion << endl;
+}
+
+string Game::minimax(const Board& board, int depth, Color& color, int& best_score) {
+
+    // For white part
+    // TODO add black part
+    string best_move = "";
+    int max_score = 0;
+    for (const auto& move: board.get_possible_moves(color)) {
+        Board new_board{board}; // TODO allocate new board
+        new_board.play(move, color);
+        int unsigned score = new_board.score(color);
+        if (score > max_score)
+        {
+            best_move = move;
+            max_score = score;
+        }
+    }
+    
+    if (depth == 0)
+        return best_move;
+    
+    best_score = max_score > best_score ? max_score : best_score;
+    color = Color::Black;
+    Board next_board{board}; // TODO allocate new board
+    next_board.play(best_move, color);
+    
+    return minimax(next_board, --depth, color, best_score);
 }
 
 bool Game::is_finished() const {
